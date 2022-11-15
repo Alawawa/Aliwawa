@@ -6,12 +6,20 @@ const typeDefs = gql`
     type Query {
         user(id: ID!): User!
         users: [User!]
-        listing(id:ID!): Listing!
+        getAllListings: [Listing!]
     }
 
     type Mutation {
         login(email: String, password: String): User!
         signup(email: String, password: String): User!
+        createListing(username: String, listing: ListingType): Listing!
+    }
+
+    input ListingType {
+      itemName: String!
+      itemPrice: Int!
+      itemDesc: String!
+      tags: [String],
     }
 
     type User {
@@ -36,9 +44,10 @@ const typeDefs = gql`
         id: ID!
         itemName: String!
         itemPrice: Int!
+        itemDesc: String!
         purchased: Boolean!
         tags: [String!]
-        sellerID: ID!,
+        sellerID: ID!
         seller: User!
     }
 `
@@ -49,6 +58,10 @@ const resolvers = {
     user: async ({ id }) => {
       const userInfo = await db.query()
       return userInfo
+    },
+    users: async(parent, args, context, info) => {
+      const users = await Users.findAll();
+      return users;
     }
   },
   Mutation : {
@@ -57,21 +70,28 @@ const resolvers = {
       const user = await Users.findOne((user) => user.email === email && user.password === password);
       console.log(user)
       return user;
+    },
+    createListing: async (parent, args, context, info) => {
+      const {username, listing} = args;
+      const user = await Users.findOne((user) => user.username === username);
+      const listingToCreate = await Listings.create({...listing, purchased : false, sellerID: user.id })
+      console.log(user, listingToCreate)
+      return listingToCreate;
     }
   },
   User: {
     listings: async (parent, args, context, info) => {
       const params = [parent.sellerID]
-      const listings = await Listings.findAll((listing) => listing.sellerID)
-      console.log(listings);
+      const listings = await Listings.findAll((listing) => listing.sellerID === parent.id)
       return listings;
     }
   },
   Listing: {
     seller: async (parent, args, context, info) => {
+      console.log('parent: ', parent)
       const seller = await Users.findOne((user) => user.id === parent.sellerID)
       return seller;
-    }
+    },
   }
 }
 

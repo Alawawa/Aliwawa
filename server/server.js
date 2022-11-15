@@ -1,9 +1,6 @@
-// import dotenv from 'dotenv';
 const dotenv = require('dotenv')
-// import express from 'express';
 const express = require('express')
 const { ApolloServer } = require('apollo-server-express');
-// import { ApolloServer } from 'apollo-server-express';
 const {typeDefs, resolvers} = require('./schema')
 
 dotenv.config();
@@ -16,7 +13,6 @@ async function startApolloServer(typeDefs, resolvers) {
   await server.start();
   server.applyMiddleware({app, path: "/api"});
 }
-
 
 app.use(express.json());
 

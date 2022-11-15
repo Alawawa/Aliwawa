@@ -1,26 +1,64 @@
 [
-    {
-        "id": 1,
-        "itemName": "Item1",
-        "itemPrice": "5.00",
-        "purchased": false,
-        "tags": ["Cool"],
-        "sellerID": 1
-    },
-    {
-      "id": 2,
-      "itemName": "Item2",
-      "itemPrice": "6.00",
-      "purchased": false,
-      "tags": ["New"],
-      "sellerID": 3
+  {
+    "id": 1,
+    "itemName": "Item1",
+    "itemPrice": "5.00",
+    "purchased": false,
+    "tags": [
+      "Cool"
+    ],
+    "sellerID": 1
+  },
+  {
+    "id": 2,
+    "itemName": "Item2",
+    "itemPrice": "6.00",
+    "purchased": false,
+    "tags": [
+      "New"
+    ],
+    "sellerID": 3
   },
   {
     "id": 3,
     "itemName": "Item3",
     "itemPrice": "6.00",
     "purchased": false,
-    "tags": ["New"],
+    "tags": [
+      "New"
+    ],
     "sellerID": 2
-}
+  },
+  {
+    "id": 4,
+    "itemName": "Item4",
+    "itemPrice": "6.00",
+    "purchased": false,
+    "tags": [
+      "New"
+    ],
+    "sellerID": 1
+  },
+  {
+    "id": "dXUlTknl9hFvdWdkqNQeH",
+    "itemName": "test",
+    "itemPrice": 7,
+    "itemDesc": "cool",
+    "tags": [
+      "cool"
+    ],
+    "purchased": false,
+    "sellerID": 1
+  },
+  {
+    "id": "KLU299RZyFpCnghJqj6tX",
+    "itemName": "test2",
+    "itemPrice": 7,
+    "itemDesc": "cool",
+    "tags": [
+      "cool"
+    ],
+    "purchased": false,
+    "sellerID": 1
+  }
 ]
