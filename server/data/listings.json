@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "itemName": "Item1",
+        "itemPrice": "5.00",
+        "purchased": false,
+        "tags": ["Cool"],
+        "sellerID": 1
+    },
+    {
+      "id": 2,
+      "itemName": "Item2",
+      "itemPrice": "6.00",
+      "purchased": false,
+      "tags": ["New"],
+      "sellerID": 3
+  },
+  {
+    "id": 3,
+    "itemName": "Item3",
+    "itemPrice": "6.00",
+    "purchased": false,
+    "tags": ["New"],
+    "sellerID": 2
+}
+]
