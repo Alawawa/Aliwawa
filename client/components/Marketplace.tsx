@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from 'react'
+import { styled } from '@mui/material/styles';
+
 
 function Marketplace() {
   const [listings, setListings] = useState<any>([]);
@@ -71,5 +73,18 @@ interface ListingDisplayProps {
   itemPic: string,
   sellerName: string
 }
+
+
+// const StyledDiv = styled('div')(({ theme: any}) => ({
+//   ...theme.typography.button,
+//   backgroundColor: theme.palette.background.paper,
+//   padding: theme.spacing(0.55, 1.75),
+//   border: '1px solid black',
+//   borderRadius: '5px',
+//   fontSmooth: 'always',
+//   cursor: 'pointer',
+//   boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)'
+// }));
+
 
 export default Marketplace
