@@ -4,8 +4,8 @@
   "description": "",
   "main": "client/index.tsx",
   "scripts": {
-    "start": "nodemon ./server/server.ts",
-    "dev": "concurrently \"webpack-dev-server --mode development --open --hot \" \"nodemon ./server/server.ts\"",
+    "start": "nodemon ./server/server.js",
+    "dev": "concurrently \"webpack-dev-server --mode development --open --hot \" \"nodemon ./server/server.js\"",
     "test": "jest",
     "build": "webpack --mode production"
   },
@@ -37,9 +37,11 @@
   "dependencies": {
     "@apollo/server": "^4.1.1",
     "@reduxjs/toolkit": "^1.9.0",
+    "apollo-server-express": "^3.11.1",
     "concurrently": "^7.5.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "fakebase": "^0.3.0",
     "graphql": "^16.6.0",
     "html-webpack-plugin": "^5.5.0",
     "react": "^18.2.0",
