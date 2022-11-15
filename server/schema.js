@@ -44,6 +44,7 @@ const typeDefs = gql`
         id: ID!
         itemName: String!
         itemPrice: Int!
+        itemPic: String!
         itemDesc: String!
         purchased: Boolean!
         tags: [String!]
@@ -62,6 +63,10 @@ const resolvers = {
     users: async(parent, args, context, info) => {
       const users = await Users.findAll();
       return users;
+    },
+    getAllListings: async(parent, args, context, info) => {
+      const listings = await Listings.findAll();
+      return listings;
     }
   },
   Mutation : {
