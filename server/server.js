@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
 app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] })
 )
 
-app.get('/google/callback', passport.authenticate('google', {
+app.get('/auth/google/callback', passport.authenticate('google', {
   successRedirect: '/protected',
   failureRedirect: '/auth/failure',
 }))
@@ -63,7 +63,7 @@ app.get('/logout', (req, res) => {
 })
 
 // routing to items endpoint
-app.use('/items', itemsRoute);
+// app.use('/items', itemsRoute);
 
 startApolloServer(typeDefs, resolvers);
 
