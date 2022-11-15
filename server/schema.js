@@ -1,4 +1,4 @@
-const db = require('./models/itemModel')
+const db = require('./models/model')
 const { ApolloServer, gql } = require('apollo-server-express');
 const { Users, Listings } = require("./db.js");
 
