@@ -20,7 +20,7 @@
       "typeRoots": ["node_modules/@types", "src/types"],
       "allowJs": true
     },
-    "include": ["client", "server"],
+    "include": ["client", "server", "__tests__/server.test.ts"],
     "exclude": ["node_modules"]
   }
 
