@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { styled } from '@mui/material/styles';
+import { theme } from '../themes';
 
 
 function Marketplace() {
@@ -34,7 +35,7 @@ function Marketplace() {
         return res.json();
       })
       .then((data) => {
-        console.log("data from frontend:", data)
+        console.log("data from frontend:", data.data)
         setListings(data.data.getAllListings)
       })
       .catch((err) => console.log(err));
@@ -54,14 +55,14 @@ function Marketplace() {
 
 const ListingDisplay = ({itemName, itemDesc, itemPrice, itemPic, sellerName}: ListingDisplayProps) => {
   return (
-    <div style={{border: '1px solid red', margin: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '300px', height: '350px'}}>
+    <div style={{border: '1px solid red', margin: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '300px', height: '350px', padding: '5px'}}>
       <h2>{itemName}</h2>
       <div style={{height: '200px'}}>
         <img src={itemPic} style={{height: '100%', width: '100%'}} alt={itemName} />
       </div>
-      <div style={{border: '1px solid black', width: '90%', display: 'flex', justifyContent: 'center'}}>
-        <span>{itemDesc}</span>
-      </div>
+        <ItemDescriptionDiv>
+          <span>{itemDesc}</span>
+        </ItemDescriptionDiv>
       <p>${itemPrice}</p>   
     </div>
   )
@@ -76,16 +77,19 @@ interface ListingDisplayProps {
 }
 
 
-// const StyledDiv = styled('div')(({ theme: any}) => ({
-//   ...theme.typography.button,
-//   backgroundColor: theme.palette.background.paper,
-//   padding: theme.spacing(0.55, 1.75),
-//   border: '1px solid black',
-//   borderRadius: '5px',
-//   fontSmooth: 'always',
-//   cursor: 'pointer',
-//   boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)'
-// }));
+const ItemDescriptionDiv = styled('div')(({ theme: any}) => ({
+  ...theme.typography.button,
+  backgroundColor: theme.palette.background.paper,
+  padding: theme.spacing(0.55, 1.75),
+  border: '1px solid black',
+  width: '90%',
+  display: 'flex',
+  textAlign: 'center',
+  justifyContent: 'center',
+  borderRadius: '5px',
+  fontSmooth: 'always',
+  boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)'
+}));
 
 
 export default Marketplace
