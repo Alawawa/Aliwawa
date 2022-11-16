@@ -39,4 +39,7 @@ const Cart = mongoose.model('cart', cartSchema, 'cart');
 
 const schemas = {'Listings': Listings, 'Users': Users, 'Transactions': Transactions, 'Cart': Cart}
 
+// mongoose causes jest to hang since the connection is never closed
+// mongoose.connection.close();
+
 module.exports = schemas
