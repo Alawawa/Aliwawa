@@ -64,7 +64,7 @@ app.get('/auth/failure', (req, res) => {
 // serving protected site upon login
 app.get('/protected', isLoggedIn, (req, res) => {
   console.log(req.user)
-  res.send(`Hello ${req.user.displayName}!`);
+  res.send(`Hello ${req.user.username}!`);
 });
 
 app.get('/logout', (req, res) => {

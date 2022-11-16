@@ -14,7 +14,7 @@ const typeDefs = gql`
 
     type Mutation {
         login(email: String, password: String): User!
-        signup(email: String, password: String): User!
+        signup(email: String, username: String, password: String): User!
         createListing(username: String, listing: ListingType): Listing!
         addToCart(username: String, cart: CartType): Cart!
         checkoutCart: Boolean!
@@ -93,6 +93,11 @@ const resolvers = {
       const user = await Users.findOne({email: email, password: password})
       return user;
     },
+    signup: async (parent, args, context, info) => {
+      const { email, username, password } = args;
+      const newUser = await Users.create({email: email, username: username, password: password, oauth: false})
+      return newUser;
+    },
     createListing: async (parent, args, context, info) => {
       const {username, listing} = args;
       const listingToCreate = await Listings.create({...listing, purchased : false, sellerId: username})
@@ -104,7 +109,7 @@ const resolvers = {
       cart.buyerId = username;
       const updatedCart = await Cart.findOneAndUpdate({buyerId: username}, cart, {upsert: true, returnDocument: 'after'});
       return updatedCart;
-    }
+    },
   },
   User: {
     listings: async (parent, args, context, info) => {
