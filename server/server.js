@@ -1,12 +1,23 @@
 const dotenv = require('dotenv')
 const express = require('express')
 const session = require('express-session');
-const itemsRoute = require('./routes/items')
+// const itemsRoute = require('./routes/items')
 const { ApolloServer } = require('apollo-server-express');
 const {typeDefs, resolvers} = require('./schema')
 const passport = require('passport');
+const mongoose = require('mongoose');
 
 dotenv.config();
+
+// connect to mongodb 
+mongoose.connect(process.env.DATABASE_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  dbName: 'aliwawaDb',
+})
+  .then(() => console.log('Connected to mongoose.'))
+  .catch((err) => console.log('(Error connecting to MongoDB) Err: ', err))
+
 const SECRET = process.env.SECRET;
 require('./auth');
 
@@ -66,6 +77,7 @@ app.get('/logout', (req, res) => {
 // app.use('/items', itemsRoute);
 
 startApolloServer(typeDefs, resolvers);
+
 
 app.listen(port, ()=> {
   console.log(`Server is listening at https://localhost:${port}`);

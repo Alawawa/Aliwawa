@@ -34,6 +34,7 @@ function Marketplace() {
         return res.json();
       })
       .then((data) => {
+        console.log("data from frontend:", data)
         setListings(data.data.getAllListings)
       })
       .catch((err) => console.log(err));
