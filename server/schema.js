@@ -114,14 +114,12 @@ const resolvers = {
   User: {
     listings: async (parent, args, context, info) => {
       const listings = await Listings.find({sellerId: parent.username})
-      console.log("User Listings: ", listings)
       return listings;
     }
   },
   Listing: {
     seller: async (parent, args, context, info) => {
       const seller = await Users.findOne({username: parent.sellerId})
-      console.log("Listing: ", seller)
       return seller;
     },
   }

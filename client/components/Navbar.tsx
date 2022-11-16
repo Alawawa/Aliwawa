@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { AppBar, Button, Typography, Dialog, TextField } from "@mui/material";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import { Box } from "@mui/system";
+import Login from "./Login";
+import Register from "./Register";
+import ShoppingCart from "./ShoppingCart";
 
 function Navbar() {
   const [login, toggleLogin] = useState<boolean>(false);
   const [signup, toggleSignup] = useState<boolean>(false);
+  const [cart, toggleCart] = useState(false);
 
   const loginHandler = () => {
     toggleLogin(!login);
@@ -64,37 +68,9 @@ function Navbar() {
           </Button>
         </Box>
       </AppBar>
-      <Dialog open={login} fullWidth={true}>
-        <Button onClick={() => loginHandler()}>x</Button>
-        <form style={{ display: "flex", flexDirection: "column" }}>
-          <TextField label="First Name" variant="filled" required />
-          <TextField label="Username" variant="filled" required />
-          <TextField
-            label="Password"
-            variant="filled"
-            type="password"
-            required
-          />
-          <TextField label="Email" variant="filled" type="email" required />
-        </form>
-      </Dialog>
-      <Dialog open={signup} fullWidth={true}>
-        <Button onClick={() => signupHandler()}>x</Button>
-        <form style={{ display: "flex", flexDirection: "column" }}>
-          <TextField label="Username" variant="filled" required />
-          <TextField
-            label="Password"
-            variant="filled"
-            type="password"
-            required
-          />
-        </form>
-      </Dialog>
-      {/* <Modal open={login} onClose={() => toggleLogin(false)}>
-        <ModalDialog>
-          <span>Hello</span>
-        </ModalDialog>
-      </Modal> */}
+      <Login login={login} loginHandler={loginHandler} />
+      <Register signup={signup} signupHandler={signupHandler} />
+      <ShoppingCart />
     </>
   );
 }
