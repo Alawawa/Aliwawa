@@ -20,7 +20,9 @@ function Navbar() {
   }
 
   const twitterLogin = () => {
-    window.open('http://localhost:3000/auth/google', '_self');
+    window.open('http://localhost:3000/auth/twitter', '_self'); 
+    // if above opens a new tab, uncomment below and replace line above
+    // window.location.href = 'http://localhost:3000/auth/twitter'
   }
 
   return (

@@ -46,18 +46,28 @@ app.use(express.json());
 app.use(express.static("./build"));
 
 // oauth serve
-app.get('/', (req, res) => {
-  res.send('<a href="/auth/google">Authenticate with Google</a>');
-});
+// app.get('/', (req, res) => {
+//   res.send('<a href="/auth/google">Authenticate with Google</a>');
+// });
 
-app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] })
-)
-
+// Google Authentication
+app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 app.get('/auth/google/callback', passport.authenticate('google', {
   successRedirect: '/protected',
   failureRedirect: '/auth/failure',
 }))
 
+// Twitter Authentication
+app.get('/auth/twitter', passport.authenticate('twitter'));
+app.get('/auth/twitter/callback', passport.authenticate('twitter', {
+  successRedirect: '/protected',
+  failureRedirect: '/auth/failure', 
+  // we could redirect for failure, 
+  // then include a callback function as a third parameter to 
+  // res.redirect to localhost:3000 instead of redirecting to protected?
+}))
+
+// If failed or success, do the following below
 app.get('/auth/failure', (req, res) => {
   res.send('something went wrong..')
 })
@@ -67,6 +77,7 @@ app.get('/protected', isLoggedIn, (req, res) => {
   res.send(`Hello ${req.user.username}!`);
 });
 
+// For logout, delete session
 app.get('/logout', (req, res) => {
   req.logout();
   req.session.destroy();
