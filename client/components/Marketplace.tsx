@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
+import { theme } from "../themes";
 
 function Marketplace() {
   const [listings, setListings] = useState<any>([]);
@@ -85,6 +86,7 @@ const ListingDisplay = ({
         alignItems: "center",
         width: "300px",
         height: "350px",
+        padding: "5px",
       }}
     >
       <h2>{itemName}</h2>
@@ -95,16 +97,9 @@ const ListingDisplay = ({
           alt={itemName}
         />
       </div>
-      <div
-        style={{
-          border: "1px solid black",
-          width: "90%",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+      <ItemDescriptionDiv>
         <span>{itemDesc}</span>
-      </div>
+      </ItemDescriptionDiv>
       <p>${itemPrice}</p>
     </div>
   );
@@ -118,15 +113,19 @@ interface ListingDisplayProps {
   sellerName: string;
 }
 
-// const StyledDiv = styled('div')(({ theme: any}) => ({
-//   ...theme.typography.button,
-//   backgroundColor: theme.palette.background.paper,
-//   padding: theme.spacing(0.55, 1.75),
-//   border: '1px solid black',
-//   borderRadius: '5px',
-//   fontSmooth: 'always',
-//   cursor: 'pointer',
-//   boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)'
-// }));
+const ItemDescriptionDiv = styled("div")(({ theme: any }) => ({
+  ...theme.typography.button,
+  backgroundColor: theme.palette.background.paper,
+  padding: theme.spacing(0.55, 1.75),
+  border: "1px solid black",
+  width: "90%",
+  display: "flex",
+  textAlign: "center",
+  justifyContent: "center",
+  borderRadius: "5px",
+  fontSmooth: "always",
+  boxShadow:
+    "0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)",
+}));
 
 export default Marketplace;

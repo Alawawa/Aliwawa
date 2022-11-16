@@ -50,6 +50,7 @@ function Navbar() {
             color="secondary"
             variant="contained"
             sx={{ color: "white", border: 1 }}
+            onClick={() => signupHandler()}
           >
             Register
           </Button>
@@ -75,6 +76,18 @@ function Navbar() {
             required
           />
           <TextField label="Email" variant="filled" type="email" required />
+        </form>
+      </Dialog>
+      <Dialog open={signup} fullWidth={true}>
+        <Button onClick={() => signupHandler()}>x</Button>
+        <form style={{ display: "flex", flexDirection: "column" }}>
+          <TextField label="Username" variant="filled" required />
+          <TextField
+            label="Password"
+            variant="filled"
+            type="password"
+            required
+          />
         </form>
       </Dialog>
       {/* <Modal open={login} onClose={() => toggleLogin(false)}>
