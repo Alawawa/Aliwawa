@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AppBar, Button, Typography, Dialog } from "@mui/material";
+import { AppBar, Button, Typography, Dialog, TextField } from "@mui/material";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import { Box } from "@mui/system";
 
@@ -63,9 +63,19 @@ function Navbar() {
           </Button>
         </Box>
       </AppBar>
-      <Dialog open={login} sx={{}}>
+      <Dialog open={login} fullWidth={true}>
         <Button onClick={() => loginHandler()}>x</Button>
-        <input type="text" />
+        <form style={{ display: "flex", flexDirection: "column" }}>
+          <TextField label="First Name" variant="filled" required />
+          <TextField label="Username" variant="filled" required />
+          <TextField
+            label="Password"
+            variant="filled"
+            type="password"
+            required
+          />
+          <TextField label="Email" variant="filled" type="email" required />
+        </form>
       </Dialog>
       {/* <Modal open={login} onClose={() => toggleLogin(false)}>
         <ModalDialog>
