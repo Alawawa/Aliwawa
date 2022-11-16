@@ -10,14 +10,22 @@ describe('Google', () => {
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     page = await browser.newPage()
+    await page.goto(APP);
   });
 
   afterAll(() => {
     browser.close();
   });
 
-  it('should be titled "Google"', async () => {
-    await page.goto(APP);
-    await expect(page.title()).resolves.toMatch('Google');
+  it('should be titled "Aliwawa"', async () => {
+
+    //await page.waitForSelector('.N3ewq',{timeout:3000}).catch(() => console.log('Class N3ewq doesn\'t exist!'));
+
+    await page.evaluate(() => {
+      if (document.querySelectorAll('p').length > 0) {
+        Array.from(document.querySelectorAll('p')).filter(element => console.log('element:', element));
+      }
+    });
+
   });
 });
