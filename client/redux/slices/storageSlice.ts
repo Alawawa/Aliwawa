@@ -1,39 +1,53 @@
-import { PayloadAction } from "@reduxjs/toolkit";
-const { createSlice, PayloadAction } = require("@reduxjs/toolkit");
+import type { PayloadAction } from "@reduxjs/toolkit";
+const { createSlice, PayloadAction, current } = require("@reduxjs/toolkit");
 const { v4: uuidv4 } = require("uuid");
 
-const initialState: stateType = {
+const initialState = {
   username: "",
   loggedIn: false,
   cart: undefined,
+  listings: [],
   email: "",
-};
+} as stateType;
 
 export const storageSlice = createSlice({
   name: "Storage",
   initialState: initialState,
   reducers: {
-    createListings: function (state: stateType, action: PayloadAction<any>) {
-      return "hi";
-    },
     loginState: (state: stateType, action: PayloadAction<any>) => {
       console.log("in login state");
-      const { username, email, cart } = action.payload;
-      console.log("checking payload: ", username, email, cart);
+      const { username, email, cart, listings } = action.payload;
       state.loggedIn = true;
       state.username = username;
       state.email = email;
       state.cart = cart;
-
-      console.log("Checking State: ", state);
+      state.listings = listings;
+      console.log("Checking State: ", current(state));
     },
+    addToCart: (state: stateType, action: PayloadAction<any>) => {
+      //push items from action payload into the state's cart's items array
+      const { item } = action.payload;
+      state.cart!.items.push(item);
+    },
+    removeFromCart: (state: stateType, action: PayloadAction<any>) => {
+      const { item } = action.payload;
+      //get id from item/listing
+      // const 
+      //search through current cart array
+      const itemIndex = state.cart!.items.findIndex(
+        (current: any) => current.id === item.id
+      );
+      state.cart!.items.splice(itemIndex, 1);
+    },
+    createListing: (state: stateType, action: PayloadAction<any>) => {},
   },
 });
 
-interface stateType {
+export interface stateType {
   username: string;
   loggedIn: boolean;
   cart?: Cart;
+  listings: [Listing?];
   email: string; //idk
 }
 
@@ -43,7 +57,7 @@ interface stateType {
 type Cart = {
   id: string | number;
   buyerId: String;
-  items: Listing[];
+  items: [Listing?];
 };
 
 type Listing = {
@@ -57,6 +71,7 @@ type Listing = {
   sellerId: String;
 };
 
-export const { createListings, loginState } = storageSlice.actions;
+export const { loginState } = storageSlice.actions;
 
-export default storageSlice.reducers;
+export default storageSlice.reducer;
+// export default storageSlice

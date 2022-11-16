@@ -19,6 +19,10 @@ function Navbar() {
     toggleSignup(!signup);
   };
 
+  const cartHandler = () => {
+    toggleCart(!cart);
+  }
+
   return (
     <>
       <AppBar
@@ -47,6 +51,15 @@ function Navbar() {
             sx={{ color: "white", border: 1, padding: "3px" }}
             onClick={() => loginHandler()}
           >
+            Welcome User! Logout.
+          </Button>
+          <Button
+            size="small"
+            color="secondary"
+            variant="contained"
+            sx={{ color: "white", border: 1, padding: "3px" }}
+            onClick={() => loginHandler()}
+          >
             Login
           </Button>
           <Button
@@ -63,6 +76,7 @@ function Navbar() {
             color="secondary"
             variant="contained"
             sx={{ color: "white", border: 1 }}
+            onClick={() => cartHandler()}
           >
             <ShoppingCartRoundedIcon />
           </Button>
@@ -70,7 +84,7 @@ function Navbar() {
       </AppBar>
       <Login login={login} loginHandler={loginHandler} />
       <Register signup={signup} signupHandler={signupHandler} />
-      <ShoppingCart />
+      <ShoppingCart cart={cart} cartHandler={cartHandler} />
     </>
   );
 }

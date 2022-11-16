@@ -6,7 +6,6 @@ function Marketplace() {
   const [listings, setListings] = useState<any>([]);
 
   const getAllListings = () => {
-    console.log("in getallalistings");
     fetch("/api", {
       method: "POST",
       body: JSON.stringify({
@@ -76,6 +75,28 @@ const ListingDisplay = ({
   itemPic,
   sellerName,
 }: ListingDisplayProps) => {
+
+  const addToCart = () => {
+    fetch("/api", {
+      method: "POST",
+      body: JSON.stringify({
+        query: ``,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log("data from frontend:", data);
+      })
+      .catch((err) => console.log(err));
+  }
+
+
   return (
     <div
       style={{
@@ -101,6 +122,7 @@ const ListingDisplay = ({
         <span>{itemDesc}</span>
       </ItemDescriptionDiv>
       <p>${itemPrice}</p>
+      <button>Add to Cart</button>
     </div>
   );
 };

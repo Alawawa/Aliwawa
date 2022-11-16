@@ -1,9 +1,15 @@
-import { Drawer } from "@mui/material";
+import { Button, Drawer } from "@mui/material";
 import React, { useState } from "react";
 
-function ShoppingCart() {
+interface ShoppingCartProps {
+  cart: boolean;
+  cartHandler: () => void;
+}
+
+function ShoppingCart({ cart, cartHandler }: ShoppingCartProps) {
   return (
-    <Drawer open={false} anchor="right">
+    <Drawer open={cart} anchor="right" PaperProps={{ sx: { width: 500 } }}>
+      <Button onClick={() => cartHandler()}>x</Button>
       <span>My Cart</span>
     </Drawer>
   );

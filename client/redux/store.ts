@@ -1,13 +1,24 @@
-const { configureStore } = require("@reduxjs/toolkit");
-const storageReducer = require('./slices/storageSlice');
+const { configureStore, combineReducers } = require("@reduxjs/toolkit");
+// const storageReducer = require("../redux/slices/storageSlice");
+import storageSlice from "./slices/storageSlice";
+console.log("Checking storage reducer: " + storageSlice);
 
+// const store = configureStore({
+// 	reducer: {
+// 		storage: storageReducer,
+// 	},
+// })
+
+const rootReducer = combineReducers({
+  storageSlice,
+});
 
 const store = configureStore({
-	reducer: {
-		storage: storageReducer
-	},
-})
+  reducer: rootReducer,
+});
 
-export type RootState = ReturnType<typeof store.getState>
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export default store;

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Dialog, TextField } from "@mui/material";
-import { loginState } from "../redux/slices/storageSlice";
-const { useDispatch, useSelector } = require("react-redux");
+import { loginState, stateType } from "../redux/slices/storageSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 interface LoginProps {
   login: boolean;
-  loginHandler: () => void;
+  loginHandler: (boolean?: boolean) => void;
 }
 
 function Login({ loginHandler, login }: LoginProps) {
@@ -13,15 +13,74 @@ function Login({ loginHandler, login }: LoginProps) {
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const dispatch = useDispatch();
+  const state = useSelector((state: any) => state);
 
   function handleClick() {
-    const payload = {
-      username,
-      password,
-      email,
+    const query = `mutation login($password: String!, $email: String!) {
+      login(password: $password, email: $email) {
+        username
+        email
+        listings {
+          id
+          itemName
+          itemDesc
+          itemPrice
+          itemPic
+          tags
+          purchased
+        }
+        cart {
+          id
+          buyerId
+          items {
+            id
+            itemName
+            itemDesc
+            itemPrice
+            itemPic
+            tags
+            purchased
+          }
+        }
+      }
+    }`;
+
+    const variables = {
+      email: email,
+      password: password,
     };
-    console.log("inside handle click", loginState);
-    dispatch(loginState(payload));
+
+    fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        query: query,
+        variables: variables,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        //dispatch here for login state
+        console.log("response from sending login mutation:", data);
+        dispatch(
+          loginState({
+            username: username,
+            email: email,
+            cart: data.data.login.cart,
+            listings: data.data.login.listings
+          })
+        );
+        loginHandler(false);
+      })
+      .catch((err) => console.log(err));
+  }
+  const googleLogin = () => {
+    window.open('http://localhost:3000/auth/google', '_self');
   }
 
   return (
@@ -50,6 +109,10 @@ function Login({ loginHandler, login }: LoginProps) {
         />
       </form>
       <Button onClick={() => handleClick()}>Sign In</Button>
+      <div style={{display: 'flex', width: '500px', height: '30px', backgroundColor: 'white'}} onClick={googleLogin}>
+          {/* <img src={require('../assets/googleImage.jpg')} alt="" /> */}
+        <p>Login with Google</p>
+      </div>
     </Dialog>
   );
 }
