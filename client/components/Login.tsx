@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Dialog, TextField } from "@mui/material";
-import { loginState, stateType } from "../redux/slices/storageSlice";
+import {
+  loginState,
+  stateType,
+  createCart,
+} from "../redux/slices/storageSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 interface LoginProps {
@@ -72,16 +76,20 @@ function Login({ loginHandler, login }: LoginProps) {
             username: username,
             email: email,
             cart: data.data.login.cart,
-            listings: data.data.login.listings
+            listings: data.data.login.listings,
           })
         );
+        //this checks if the user has a cart, if not, we will dispatch createCart in redux.
+        if (data.data.login.cart === null) {
+          dispatch(createCart());
+        }
         loginHandler(false);
       })
       .catch((err) => console.log(err));
   }
   const googleLogin = () => {
-    window.open('http://localhost:3000/auth/google', '_self');
-  }
+    window.open("http://localhost:3000/auth/google", "_self");
+  };
 
   return (
     <Dialog open={login} fullWidth={true}>
@@ -109,8 +117,16 @@ function Login({ loginHandler, login }: LoginProps) {
         />
       </form>
       <Button onClick={() => handleClick()}>Sign In</Button>
-      <div style={{display: 'flex', width: '500px', height: '30px', backgroundColor: 'white'}} onClick={googleLogin}>
-          {/* <img src={require('../assets/googleImage.jpg')} alt="" /> */}
+      <div
+        style={{
+          display: "flex",
+          width: "500px",
+          height: "30px",
+          backgroundColor: "white",
+        }}
+        onClick={googleLogin}
+      >
+        {/* <img src={require('../assets/googleImage.jpg')} alt="" /> */}
         <p>Login with Google</p>
       </div>
     </Dialog>

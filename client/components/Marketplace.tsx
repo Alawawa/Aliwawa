@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { theme } from "../themes";
+import { useDispatch, useSelector } from "react-redux";
 
 function Marketplace() {
+  const state = useSelector((state: any) => state);
   const [listings, setListings] = useState<any>([]);
 
   const getAllListings = () => {
@@ -73,14 +75,45 @@ const ListingDisplay = ({
   itemDesc,
   itemPrice,
   itemPic,
+  tags,
   sellerName,
 }: ListingDisplayProps) => {
+  const state = useSelector((state: any) => state);
 
   const addToCart = () => {
+    const listing = {
+      itemName,
+      itemDesc,
+      itemPrice,
+      itemPic,
+      tags,
+    };
+
+    const variables = {
+      username: "ray",
+      listing: listing,
+    };
+
+    const query = `mutation addToCart($username: String!, $listing: ListingType) {
+                      addToCart(username: $username, listing: $listing) {
+                        id
+                        items {
+                          id
+                          itemName
+                          itemDesc
+                          itemPrice
+                          itemPic
+                          tags
+                          purchased
+                        }
+                      }
+                    }`;
+
     fetch("/api", {
       method: "POST",
       body: JSON.stringify({
-        query: ``,
+        query: query,
+        variables: variables
       }),
       headers: {
         "Content-Type": "application/json",
@@ -91,11 +124,10 @@ const ListingDisplay = ({
         return res.json();
       })
       .then((data) => {
-        console.log("data from frontend:", data);
+        console.log("response from addToCart:", data);
       })
       .catch((err) => console.log(err));
-  }
-
+  };
 
   return (
     <div
@@ -122,7 +154,7 @@ const ListingDisplay = ({
         <span>{itemDesc}</span>
       </ItemDescriptionDiv>
       <p>${itemPrice}</p>
-      <button>Add to Cart</button>
+      <button onClick={() => addToCart()}>Add to Cart</button>
     </div>
   );
 };
@@ -132,6 +164,7 @@ interface ListingDisplayProps {
   itemDesc: string;
   itemPrice: number | string;
   itemPic: string;
+  tags?: [string?];
   sellerName: string;
 }
 
