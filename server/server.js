@@ -78,8 +78,7 @@ app.get('/logout', (req, res) => {
 
 startApolloServer(typeDefs, resolvers);
 
-
-app.listen(port, ()=> {
+module.exports = app.listen(port, ()=> {
   console.log(`Server is listening at https://localhost:${port}`);
 });
 
