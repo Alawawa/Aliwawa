@@ -6,7 +6,10 @@ const { ApolloServer } = require('apollo-server-express');
 const {typeDefs, resolvers} = require('./schema')
 const passport = require('passport');
 const mongoose = require('mongoose');
-
+const path = require('path');
+const app = express();
+const port = 3000;
+require('./auth');
 dotenv.config();
 
 // connect to mongodb 
@@ -18,14 +21,8 @@ mongoose.connect(process.env.DATABASE_URI, {
   .then(() => console.log('Connected to mongoose.'))
   .catch((err) => console.log('(Error connecting to MongoDB) Err: ', err))
 
-const SECRET = process.env.SECRET;
-require('./auth');
-
-const app = express();
-const port = 3000;
-
 // connecting with express-session below
-app.use(session({ secret: SECRET }));
+app.use(session({ secret: process.env.SECRET }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -45,10 +42,15 @@ app.use(express.json());
 //serve
 app.use(express.static("./build"));
 
-// oauth serve
+// connect html WHY DOESNT THIS WORK??
 // app.get('/', (req, res) => {
-//   res.send('<a href="/auth/google">Authenticate with Google</a>');
+//   res.sendFile(path.join(__dirname, '../client/index.html'));
 // });
+
+// oauth serve
+app.get('/', (req, res) => {
+  res.send('<a href="/auth/google">Authenticate with Google</a><a href="/auth/twitter">Authenticate with Twitter</a>');
+});
 
 // Google Authentication
 app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
@@ -92,5 +94,3 @@ startApolloServer(typeDefs, resolvers);
 module.exports = app.listen(port, ()=> {
   console.log(`Server is listening at https://localhost:${port}`);
 });
-
-// next steps install express-session, continue youtube 15:26

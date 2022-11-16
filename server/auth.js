@@ -46,9 +46,6 @@ passport.use(new TwitterStrategy({
   callbackURL: "http://localhost:3000/auth/twitter/callback"
 },
 async function(accessToken, refreshToken, profile, cb) {
-  // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-  //   return cb(err, user);
-  // });
   //if statement: find user in UserDB
   console.log("Checking Profile for twitter auth: ", profile)
   let {username} = profile;

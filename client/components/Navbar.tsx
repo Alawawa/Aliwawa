@@ -29,8 +29,8 @@ function Navbar() {
     <AppBar sx={{height: '50px', display: 'flex', justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', position: 'fixed', padding: "0px 20px"}}>  
       <Typography>ALIWAWA</Typography>
       <Box sx={{width: '20%', display: 'flex', justifyContent: 'space-between'}}>
-        <div style={{display: 'flex', width: '500px', height: '30px', backgroundColor: 'lightblue'}} onClick={googleLogin}>
-          <img src={require('../assets/googleImage.jpg')} alt="" />
+        <div style={{display: 'flex', width: '500px', height: '30px', backgroundColor: 'white'}} onClick={googleLogin}>
+          {/* <img src={require('../assets/googleImage.jpg')} alt="" /> */}
           <p>Google Login</p>
         </div>
         <div style={{display: 'flex', width: '500px', height: '30px', backgroundColor: 'lightblue'}} onClick={twitterLogin}>
@@ -44,7 +44,19 @@ function Navbar() {
           {({ TransitionProps }) => (
             <Fade {...TransitionProps} timeout={350}>
               <Paper>
-                <Typography sx={{ p: 2}}>Shopping Cart List</Typography>
+                <Typography sx={{ p: 2}}>
+                  <ul>
+                    Shopping Cart List
+                    <li>
+                      List Item 1
+                    </li>
+                    <li>
+                      List Item 2
+                    </li>
+                    {/* {listItems} */}
+                  </ul>
+                  <Button variant="contained">Buy Now</Button>
+                </Typography>
               </Paper>  
             </Fade>
           )}
