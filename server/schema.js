@@ -1,11 +1,14 @@
 const db = require('./models/model')
 const { ApolloServer, gql } = require('apollo-server-express');
-const { Users, Listings } = require("./db.js");
+const schema  = require('./models/model')
+const {Listings, Users, Transactions, Cart} = schema;
+
+console.log("Checking schemas :", Listings)
 
 const typeDefs = gql`
     type Query {
-        user(id: ID!): User!
-        users: [User!]
+        getUser(id: ID, username: String): User!
+        getAllUsers: [User!]
         getAllListings: [Listing!]
     }
 
@@ -13,14 +16,28 @@ const typeDefs = gql`
         login(email: String, password: String): User!
         signup(email: String, password: String): User!
         createListing(username: String, listing: ListingType): Listing!
+        addToCart(username: String, cart: CartType): Cart!
+        checkoutCart: Boolean!
     }
 
     input ListingType {
       itemName: String!
       itemPrice: Int!
       itemDesc: String!
+      itemPic: String!
       tags: [String],
     }
+
+    input CartType {
+      items: [ListingType]
+    }
+
+    type Cart {
+      id: ID!
+      buyerId: String!
+      items: [Listing]
+    }
+
 
     type User {
       id: ID!
@@ -30,6 +47,7 @@ const typeDefs = gql`
       oauth: Boolean!
       listings: [Listing!]
       orders: [Listing]
+      cart: Cart
     }
 
     type Transaction {
@@ -48,7 +66,7 @@ const typeDefs = gql`
         itemDesc: String!
         purchased: Boolean!
         tags: [String!]
-        sellerID: ID!
+        sellerId: String!
         seller: User!
     }
 `
@@ -56,45 +74,49 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    user: async ({ id }) => {
-      const userInfo = await db.query()
+    getUser: async (parent, {id, username}, context, info) => {
+      const userInfo = await Users.findOne({id: id, username: username});
       return userInfo
     },
-    users: async(parent, args, context, info) => {
-      const users = await Users.findAll();
+    getAllUsers: async(parent, args, context, info) => {
+      const users = await Users.find({});
       return users;
     },
     getAllListings: async(parent, args, context, info) => {
-      const listings = await Listings.findAll();
+      const listings = await Listings.find({});
       return listings;
     }
   },
   Mutation : {
     login: async (parent, args, context, info) => {
       const { email, password } = args;
-      const user = await Users.findOne((user) => user.email === email && user.password === password);
-      console.log(user)
+      const user = await Users.findOne({email: email, password: password})
       return user;
     },
     createListing: async (parent, args, context, info) => {
       const {username, listing} = args;
-      const user = await Users.findOne((user) => user.username === username);
-      const listingToCreate = await Listings.create({...listing, purchased : false, sellerID: user.id })
-      console.log(user, listingToCreate)
+      const listingToCreate = await Listings.create({...listing, purchased : false, sellerId: username})
       return listingToCreate;
+    },
+    addToCart: async (parent, args, context, info) => {
+      const {username, cart} = args;
+      //update the cart with the username
+      cart.buyerId = username;
+      const updatedCart = await Cart.findOneAndUpdate({buyerId: username}, cart, {upsert: true, returnDocument: 'after'});
+      return updatedCart;
     }
   },
   User: {
     listings: async (parent, args, context, info) => {
-      const params = [parent.sellerID]
-      const listings = await Listings.findAll((listing) => listing.sellerID === parent.id)
+      const listings = await Listings.find({sellerId: parent.username})
+      console.log("User Listings: ", listings)
       return listings;
     }
   },
   Listing: {
     seller: async (parent, args, context, info) => {
-      console.log('parent: ', parent)
-      const seller = await Users.findOne((user) => user.id === parent.sellerID)
+      const seller = await Users.findOne({username: parent.sellerId})
+      console.log("Listing: ", seller)
       return seller;
     },
   }
