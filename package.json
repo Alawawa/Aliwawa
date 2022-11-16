@@ -4,9 +4,9 @@
   "description": "",
   "main": "client/index.tsx",
   "scripts": {
-    "start": "nodemon ./server/server.ts",
-    "dev": "concurrently \"webpack-dev-server --mode development --open --hot \" \"nodemon ./server/server.ts\"",
-    "test": "jest --config ./jest/jest.config.ts",
+    "start": "nodemon ./server/server.js",
+    "dev": "concurrently \"webpack-dev-server --mode development --open --hot \" \"nodemon ./server/server.js\"",
+    "test": "jest --verbose",
     "build": "webpack --mode production"
   },
   "repository": {
@@ -20,8 +20,8 @@
     "url": "https://github.com/Alawawa/Gorgonzola/issues"
   },
   "jest": {
-    "globalSetup": "jest/setup.ts",
-    "globalTeardown": "jest/teardown.ts",
+    "globalSetup": "./jest/jest-setup.js",
+    "globalTeardown": "./jest/jest-teardown.js",
     "testEnvironment": "jest-environment-jsdom",
     "setupFilesAfterEnv": [
       "@testing-library/jest-dom/extend-expect"
@@ -49,16 +49,29 @@
   },
   "dependencies": {
     "@apollo/server": "^4.1.1",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@fontsource/roboto": "^4.5.8",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.13",
     "@reduxjs/toolkit": "^1.9.0",
+    "apollo-server-express": "^3.11.1",
     "concurrently": "^7.5.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "fakebase": "^0.3.0",
     "graphql": "^16.6.0",
     "html-webpack-plugin": "^5.5.0",
-    "jest-environment-puppeteer": "^6.1.1",
+    "jest-environment-jsdom": "^28.1.0",
+    "mongoose": "^6.7.2",
+    "nodemon": "^2.0.20",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
     "puppeteer": "^19.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5",
     "ts-node": "^10.9.1",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.11.1"
