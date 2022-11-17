@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "itemName": "Air Ray 2s",
+    "itemDesc": "Awesome Cool New Shoes, Air Ray 2's",
+    "itemPrice": "5.00",
+    "itemPic": "https://i.ebayimg.com/images/g/56MAAOSw4wBi4wX0/s-l500.png",
+    "purchased": false,
+    "tags": [
+      "Cool"
+    ],
+    "sellerID": 1
+  },
+  {
+    "id": 2,
+    "itemName": "Timberlands",
+    "itemDesc": "Tim Tim Tim Tim Tim Tim Tim Tim Tim Tim Tim Tim Tim Tim Tim Tim Tim Tim Tim Tim",
+    "itemPrice": "6.00",
+    "purchased": false,
+    "itemPic": "https://i.ebayimg.com/images/g/l0wAAOSw1LliAp-7/s-l500.png",
+    "tags": [
+      "New"
+    ],
+    "sellerID": 3
+  },
+  {
+    "id": 3,
+    "itemName": "Big Air Ray 5's",
+    "itemDesc": "Awesome Cool New Shoes, Air Ray 5's",
+    "itemPrice": "6.00",
+    "itemPic": "https://i.ebayimg.com/images/g/FZcAAOSwnmlizy4t/s-l500.png",
+    "purchased": false,
+    "tags": [
+      "New"
+    ],
+    "sellerID": 2
+  },
+  {
+    "id": 4,
+    "itemName": "Kristen Boost 350",
+    "itemDesc": "Bim Bim Bim Bim Bim Bim Bim Bim Bim Bim Bim",
+    "itemPrice": "6.00",
+    "itemPic": "https://i.ebayimg.com/images/g/M~8AAOSw~TZiYzXU/s-l500.png",
+    "purchased": false,
+    "tags": [
+      "New"
+    ],
+    "sellerID": 1
+  },
+  {
+    "id": "dXUlTknl9hFvdWdkqNQeH",
+    "itemName": "MATTHEW ",
+    "itemPic": "https://i.ebayimg.com/images/g/56MAAOSw4wBi4wX0/s-l500.png",
+    "itemPrice": 7,
+    "itemDesc": "cool",
+    "tags": [
+      "cool"
+    ],
+    "purchased": false,
+    "sellerID": 1
+  },
+  {
+    "id": "KLU299RZyFpCnghJqj6tX",
+    "itemName": "test2",
+    "itemPrice": 7,
+    "itemPic": "https://i.ebayimg.com/images/g/56MAAOSw4wBi4wX0/s-l500.png",
+    "itemDesc": "cool",
+    "tags": [
+      "cool"
+    ],
+    "purchased": false,
+    "sellerID": 1
+  }
+]

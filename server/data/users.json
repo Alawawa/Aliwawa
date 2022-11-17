@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "email": "ray@gmail.com",
+        "username": "ray",
+        "password": "123",
+        "oauth": false
+    },
+    {
+        "id": 2,
+        "email": "jackie@gmail.com",
+        "username": "jackie",
+        "password": "123",
+        "oauth": false
+    },
+    {
+        "id": 3,
+        "email": "kristen@gmail.com",
+        "username": "kristen",
+        "password": "123",
+        "oauth": false
+    },
+    {
+        "id": 4,
+        "email": "tim@gmail.com",
+        "username": "tim",
+        "password": "123",
+        "oauth": false
+    },
+    {
+        "id": 5,
+        "email": "matt@gmail.com",
+        "username": "matt",
+        "password": "123",
+        "oauth": false
+    }
+]
