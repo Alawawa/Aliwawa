@@ -7,9 +7,11 @@ import {current} from '@reduxjs/toolkit'
 interface ShoppingCartProps {
   cart: boolean;
   cartHandler: () => void;
+  cartUpdate: any,
+  toggleCartUpdate: any
 }
 
-function ShoppingCart({ cart, cartHandler }: ShoppingCartProps) {
+function ShoppingCart({ cartUpdate, toggleCartUpdate, cart, cartHandler }: ShoppingCartProps) {
   const state = useSelector((state: RootState) => state.storageSlice);
   const stateCart = useSelector((state: RootState) => state.storageSlice.cart);
   const stateCartItems = useSelector((state: RootState) => state.storageSlice.cart?.items);
@@ -22,7 +24,7 @@ function ShoppingCart({ cart, cartHandler }: ShoppingCartProps) {
   //  }
   // })
   useEffect(() => {
-    if (state.loggedIn) {
+    if (state.loggedIn && stateCart !== undefined) {
       console.log("Checking state cart items: ", stateCartItems)
       console.log("Checking state cart: ", stateCart)
       console.log("Checking state: ", state)
@@ -32,10 +34,10 @@ function ShoppingCart({ cart, cartHandler }: ShoppingCartProps) {
 
   useEffect(() => {
     if (stateCart !== undefined) {
-      console.log("Bro")
       setCartItems(stateCartItems)
     }
-  })
+    console.log("The Cart Update: ", cartUpdate)
+  }, [cartUpdate])
 
   // useEffect(() => {
   //   if (cartItems !== state.current.cart?.items && state.current.cart !== undefined) {

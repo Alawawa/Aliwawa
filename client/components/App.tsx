@@ -6,6 +6,7 @@ import Search from '../components/Search'
 
 function App() {
   const [cartUpdate,  toggleCartUpdate] = useState<number>(0);
+  
   return (
     <div>
       <Navbar cartUpdate={cartUpdate} toggleCartUpdate={toggleCartUpdate} />
