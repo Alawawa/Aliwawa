@@ -6,8 +6,11 @@ const { ApolloServer } = require('apollo-server-express');
 const {typeDefs, resolvers} = require('./schema')
 const passport = require('passport');
 const mongoose = require('mongoose');
-
+const path = require('path');
+const app = express();
+const port = 3000;
 dotenv.config();
+require('./auth');
 
 // connect to mongodb 
 mongoose.connect(process.env.DATABASE_URI, {
@@ -19,10 +22,6 @@ mongoose.connect(process.env.DATABASE_URI, {
   .catch((err) => console.log('(Error connecting to MongoDB) Err: ', err))
 
 const SECRET = process.env.SECRET;
-require('./auth');
-
-const app = express();
-const port = 3000;
 
 // connecting with express-session below
 app.use(session({ secret: SECRET }));
@@ -45,28 +44,45 @@ app.use(express.json());
 //serve
 app.use(express.static("./build"));
 
-// oauth serve
+// connect html WHY DOESNT THIS WORK??
 app.get('/', (req, res) => {
-  res.send('<a href="/auth/google">Authenticate with Google</a>');
+  res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] })
-)
+// oauth serve
+// app.get('/', (req, res) => {
+//   res.send('<a href="/auth/google">Authenticate with Google</a><a href="/auth/twitter">Authenticate with Twitter</a>');
+// });
 
+// Google Authentication
+app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 app.get('/auth/google/callback', passport.authenticate('google', {
   successRedirect: '/protected',
   failureRedirect: '/auth/failure',
 }))
 
+// Twitter Authentication
+app.get('/auth/twitter', passport.authenticate('twitter'));
+app.get('/auth/twitter/callback', passport.authenticate('twitter', {
+  successRedirect: '/protected',
+  failureRedirect: '/auth/failure', 
+  // we could redirect for failure, 
+  // then include a callback function as a third parameter to 
+  // res.redirect to localhost:3000 instead of redirecting to protected?
+}))
+
+// If failed or success, do the following below
 app.get('/auth/failure', (req, res) => {
   res.send('something went wrong..')
 })
 // serving protected site upon login
 app.get('/protected', isLoggedIn, (req, res) => {
   console.log(req.user)
-  res.send(`Hello ${req.user.username}!`);
+  res.redirect('/');
+  // res.send(`Hello ${req.user.username}!`);
 });
 
+// For logout, delete session
 app.get('/logout', (req, res) => {
   req.logout();
   req.session.destroy();
