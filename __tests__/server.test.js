@@ -177,13 +177,20 @@ describe('Server Tests', () => {
 
   describe('Listings', () => {
 
-    let newListing = {
-      itemName : 'Sneakers' + makeID(),
-      itemDesc : 'Run fast',
-      itemPrice : 1,
-      itemPic : 'https://www.shoecarnival.com/mens_skechers_cutback_51286_training_sneakers/92358.html?color=177482&queryID=a2233502141c840774cb6ec9e4fa3ea8&objectID=92358-177482',
-      tags: ['jump', 'high']
-    }
+    let newListing;
+
+    beforeAll(() => {
+      newListing = {
+        itemName : 'Sneakers' + makeID(),
+        itemDesc : 'Run fast',
+        itemPrice : 1,
+        itemPic : 'https://www.shoecarnival.com/mens_skechers_cutback_51286_training_sneakers/92358.html?color=177482&queryID=a2233502141c840774cb6ec9e4fa3ea8&objectID=92358-177482',
+        sellerId : newUsername,
+        id : makeID().toString(),
+        purchased : false,
+        tags: ['jump', 'high']
+      }
+    })
 
     it('User should be able to create a listing', async () => {
       const resp = await graphQLPost(`mutation createListing($username: String!, $listing: ListingType!) {
