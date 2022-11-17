@@ -20,26 +20,65 @@ export const storageSlice = createSlice({
       state.loggedIn = true;
       state.username = username;
       state.email = email;
-      state.cart = cart;
       state.listings = listings;
+      state.cart = cart;
       console.log("Checking State: ", current(state));
+    },
+    createCart: (state: stateType, action: PayloadAction<any>) => {
+      const newCart: Cart = {
+        id: uuidv4(),
+        buyerId: state.username,
+        items: [],
+      };
+      const query = `mutation createCart($cart: CartType) {
+        createCart(cart: $cart) {
+          id
+          buyerId
+        }
+      }`;
+      const variables = {
+        cart: newCart,
+      };
+
+      //update cart
+      fetch("/api", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          query: query,
+          variables: variables,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log("Checking new cart", data))
+        .catch((err) => console.log(err));
     },
     addToCart: (state: stateType, action: PayloadAction<any>) => {
       //push items from action payload into the state's cart's items array
-      const { item } = action.payload;
-      state.cart!.items.push(item);
+      console.log('checking da payload in da reducer: ', action.payload)
+      state.cart!.items.push(action.payload);
     },
     removeFromCart: (state: stateType, action: PayloadAction<any>) => {
       const { item } = action.payload;
-      //get id from item/listing
-      // const 
+      const { id } = item;
       //search through current cart array
       const itemIndex = state.cart!.items.findIndex(
-        (current: any) => current.id === item.id
+        (current: any) => current.id === id
       );
       state.cart!.items.splice(itemIndex, 1);
+      console.log("Checking State: ", current(state));
     },
-    createListing: (state: stateType, action: PayloadAction<any>) => {},
+    createListing: (state: stateType, action: PayloadAction<any>) => {
+      // form with all the item desc
+      // pass in an object that will look like type listing
+      // if item id exists, just update the quantity
+      // push that onto listing array state
+      const { listing } = action.payload;
+      state.listings.push(listing);
+    },
   },
 });
 
@@ -71,7 +110,14 @@ type Listing = {
   sellerId: String;
 };
 
-export const { loginState } = storageSlice.actions;
+export const {
+  loginState,
+  createCart,
+  addToCart,
+  removeFromCart,
+  createListing,
+} = storageSlice.actions;
 
 export default storageSlice.reducer;
+
 // export default storageSlice
