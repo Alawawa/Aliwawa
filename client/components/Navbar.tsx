@@ -5,8 +5,9 @@ import { Box } from "@mui/system";
 import Login from "./Login";
 import Register from "./Register";
 import ShoppingCart from "./ShoppingCart";
+import { AnyIfEmpty } from "react-redux";
 
-function Navbar() {
+function Navbar({cartUpdate, toggleCartUpdate}: any) {
   const [login, toggleLogin] = useState<boolean>(false);
   const [signup, toggleSignup] = useState<boolean>(false);
   const [cart, toggleCart] = useState(false);
@@ -84,7 +85,7 @@ function Navbar() {
       </AppBar>
       <Login login={login} loginHandler={loginHandler} />
       <Register signup={signup} signupHandler={signupHandler} />
-      <ShoppingCart cart={cart} cartHandler={cartHandler} />
+      <ShoppingCart cartUpdate={cartUpdate} toggleCartUpdate={toggleCartUpdate} cart={cart} cartHandler={cartHandler} />
     </>
   );
 }

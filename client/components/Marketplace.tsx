@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { theme } from "../themes";
+import { AppBar, Button, Typography, Dialog, TextField } from "@mui/material";
 import type { RootState } from "../redux/store";
 import { addToCart } from "../redux/slices/storageSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,11 +57,17 @@ function Marketplace({cartUpdate, toggleCartUpdate}: any) {
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "center",
-        border: "2px solid blue",
+        border: "1px solid black",
+        margin: '10px',
+        padding: '10px',
+        backgroundColor: 'rgba(249,205,173, .5)',
+        borderRadius: '5px'
       }}
     >
       {listings.map((el: any, i: number) => (
         <ListingDisplay
+          cartUpdate={cartUpdate} 
+          toggleCartUpdate={toggleCartUpdate}
           itemName={el.itemName}
           itemDesc={el.itemDesc}
           itemPrice={el.itemPrice}
@@ -85,6 +92,8 @@ const ListingDisplay = ({
   id,
   purchased,
   sellerId,
+  cartUpdate,
+  toggleCartUpdate
 }: ListingDisplayProps) => {
 
   const [add2cart, toggleAdd2cart] = useState<boolean>(false)
@@ -147,8 +156,8 @@ const ListingDisplay = ({
         console.log("response from addToCart: ", data.data.addToCart);
         const cart = data.data.addToCart;
         
-        dispatch(addToCart(cart))
-        
+        // dispatch(addToCart(cart))
+        toggleCartUpdate(cartUpdate + 1)
       })
       .catch((err) => console.log(err));
   };
@@ -165,11 +174,11 @@ const ListingDisplay = ({
         flexDirection: "column",
         alignItems: "center",
         width: "300px",
-        height: "350px",
-        padding: "5px",
+        height: "450px",
+        padding: "12px",
       }}
     >
-      <h2>{itemName}</h2>
+      <ItemNameDiv><h2>{itemName}</h2></ItemNameDiv>
       <div style={{ height: "200px" }}>
         <img
           src={itemPic}
@@ -182,7 +191,7 @@ const ListingDisplay = ({
       </ItemDescriptionDiv>
       <p>${itemPrice}</p>
       {/* {!add2cart ? <button onClick={() => addToCart()}>Add to Cart</button> : <button>Added To Cart!</button>} */}
-      <button onClick={() => handleClick()}>Add to Cart</button>
+      <Button variant="contained" color="secondary" sx={{border: 1}} onClick={handleClick}> Add to Cart</Button>
     </div>
   );
 };
@@ -196,6 +205,8 @@ interface ListingDisplayProps {
   id: number | string;
   purchased: boolean;
   sellerId: string;
+  cartUpdate: any,
+  toggleCartUpdate: Dispatch<SetStateAction<number>>;
 }
 
 const ItemDescriptionDiv = styled("div")(({ theme: any }) => ({
@@ -204,10 +215,32 @@ const ItemDescriptionDiv = styled("div")(({ theme: any }) => ({
   padding: theme.spacing(0.55, 1.75),
   border: "1px solid black",
   width: "90%",
+  maxHeight: '50px',
+  minHeight: '50px',
   display: "flex",
   textAlign: "center",
   justifyContent: "center",
   borderRadius: "5px",
+  fontSmooth: "always",
+  boxShadow:
+    "0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)",
+}));
+
+
+const ItemNameDiv = styled("div")(({ theme: any }) => ({
+  ...theme.typography.button,
+  backgroundColor: theme.palette.background.paper,
+  padding: theme.spacing(0.55, 1.75),
+  border: "1px solid white",
+  width: "90%",
+  margin: '5px',
+  maxHeight: '35px',
+  minHeight: '35px',
+  display: "flex",
+  textAlign: "center",
+  justifyContent: "center",
+  borderRadius: "5px",
+  alignItems: 'center',
   fontSmooth: "always",
   boxShadow:
     "0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)",
