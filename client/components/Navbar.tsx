@@ -44,7 +44,7 @@ function Navbar() {
             justifyContent: "space-between",
           }}
         >
-          <Button
+          {/* <Button
             size="small"
             color="secondary"
             variant="contained"
@@ -52,7 +52,7 @@ function Navbar() {
             onClick={() => loginHandler()}
           >
             Welcome User! Logout.
-          </Button>
+          </Button> */}
           <Button
             size="small"
             color="secondary"

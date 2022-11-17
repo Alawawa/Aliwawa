@@ -90,6 +90,11 @@ function Login({ loginHandler, login }: LoginProps) {
   const googleLogin = () => {
     window.open("http://localhost:3000/auth/google", "_self");
   };
+  const twitterLogin = () => {
+    window.open('http://localhost:3000/auth/twitter', '_self'); 
+    // if above opens a new tab, uncomment below and replace line above
+    // window.location.href = 'http://localhost:3000/auth/twitter'
+  }
 
   return (
     <Dialog open={login} fullWidth={true}>
@@ -128,6 +133,18 @@ function Login({ loginHandler, login }: LoginProps) {
       >
         {/* <img src={require('../assets/googleImage.jpg')} alt="" /> */}
         <p>Login with Google</p>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          width: "500px",
+          height: "30px",
+          backgroundColor: "white",
+        }}
+        onClick={twitterLogin}
+      >
+        {/* <img src={require('../assets/googleImage.jpg')} alt="" /> */}
+        <p>Login with Twitter</p>
       </div>
     </Dialog>
   );

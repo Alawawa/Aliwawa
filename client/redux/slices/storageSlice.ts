@@ -58,9 +58,8 @@ export const storageSlice = createSlice({
     },
     addToCart: (state: stateType, action: PayloadAction<any>) => {
       //push items from action payload into the state's cart's items array
-      const { item } = action.payload;
-      state.cart!.items.push(item);
-      console.log("Checking State: ", current(state));
+      console.log('checking da payload in da reducer: ', action.payload)
+      state.cart!.items.push(action.payload);
     },
     removeFromCart: (state: stateType, action: PayloadAction<any>) => {
       const { item } = action.payload;

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { theme } from "../themes";
+import type { RootState } from "../redux/store";
+import { addToCart } from "../redux/slices/storageSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-function Marketplace() {
-  const state = useSelector((state: any) => state);
+function Marketplace({cartUpdate, toggleCartUpdate}: any) {
+  const state = useSelector((state: RootState) => state).storageSlice;
   const [listings, setListings] = useState<any>([]);
 
   const getAllListings = () => {
@@ -20,6 +22,7 @@ function Marketplace() {
             itemPic
             tags
             purchased
+            sellerId
             seller {
               username
               email
@@ -62,7 +65,10 @@ function Marketplace() {
           itemDesc={el.itemDesc}
           itemPrice={el.itemPrice}
           itemPic={el.itemPic}
-          sellerName={el.seller.username}
+          tags={el.tags}
+          id={el.id}
+          purchased={el.purchased}
+          sellerId={el.sellerId}
           key={i}
         />
       ))}
@@ -76,29 +82,42 @@ const ListingDisplay = ({
   itemPrice,
   itemPic,
   tags,
-  sellerName,
+  id,
+  purchased,
+  sellerId,
 }: ListingDisplayProps) => {
-  const state = useSelector((state: any) => state);
 
-  const addToCart = () => {
+  const [add2cart, toggleAdd2cart] = useState<boolean>(false)
+  const state = useSelector((state: RootState) => state.storageSlice);
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    
     const listing = {
       itemName,
       itemDesc,
       itemPrice,
       itemPic,
       tags,
+      id,
+      purchased,
+      sellerId
     };
 
+    dispatch(addToCart(listing));
+    
     const variables = {
-      username: "ray",
+      username: state.username,
       listing: listing,
     };
+
+    
 
     const query = `mutation addToCart($username: String!, $listing: ListingType) {
                       addToCart(username: $username, listing: $listing) {
                         id
+                        buyerId
                         items {
-                          id
                           itemName
                           itemDesc
                           itemPrice
@@ -124,10 +143,18 @@ const ListingDisplay = ({
         return res.json();
       })
       .then((data) => {
-        console.log("response from addToCart:", data);
+        console.log("data: ", data)
+        console.log("response from addToCart: ", data.data.addToCart);
+        const cart = data.data.addToCart;
+        
+        dispatch(addToCart(cart))
+        
       })
       .catch((err) => console.log(err));
   };
+
+
+
 
   return (
     <div
@@ -154,7 +181,8 @@ const ListingDisplay = ({
         <span>{itemDesc}</span>
       </ItemDescriptionDiv>
       <p>${itemPrice}</p>
-      <button onClick={() => addToCart()}>Add to Cart</button>
+      {/* {!add2cart ? <button onClick={() => addToCart()}>Add to Cart</button> : <button>Added To Cart!</button>} */}
+      <button onClick={() => handleClick()}>Add to Cart</button>
     </div>
   );
 };
@@ -165,7 +193,9 @@ interface ListingDisplayProps {
   itemPrice: number | string;
   itemPic: string;
   tags?: [string?];
-  sellerName: string;
+  id: number | string;
+  purchased: boolean;
+  sellerId: string;
 }
 
 const ItemDescriptionDiv = styled("div")(({ theme: any }) => ({

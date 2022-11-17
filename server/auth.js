@@ -4,9 +4,9 @@ const schema = require("./models/model");
 const { Users } = schema;
 const CLIENT_ID = process.env.CLIENT_ID;
 const SECRET = process.env.SECRET;
-
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
 
 passport.use(
   new GoogleStrategy(
@@ -49,6 +49,34 @@ passport.use(
     }
   )
 );
+
+passport.use(new TwitterStrategy({
+  consumerKey: process.env.TWITTER_CONSUMER_KEY,
+  consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+  callbackURL: "http://localhost:3000/auth/twitter/callback"
+},
+async function(accessToken, refreshToken, profile, cb) {
+  //if statement: find user in UserDB
+  console.log("Checking Profile for twitter auth: ", profile)
+  let {username} = profile;
+  //if user is not found, create a new user in the DB
+  const user = await Users.findOne({username: username});
+  if (user) {
+    console.log("User Exists", user)
+    cb(null, user)
+    return user
+  } else {
+    const newUser = await Users.create({username: username, email: 'email', password: '123', oauth: true});
+    console.log('create new user', newUser)
+    cb(null, newUser)
+    return newUser;
+  }
+  //if user is found return user;
+  
+  
+  // return done(null, profile)
+}
+));
 
 passport.serializeUser(function (user, done) {
   done(null, user);

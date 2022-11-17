@@ -27,6 +27,9 @@ const typeDefs = gql`
     itemPrice: Int!
     itemDesc: String!
     itemPic: String!
+    id: ID!
+    purchased: Boolean!
+    sellerId: String!
     tags: [String]
   }
 
@@ -96,12 +99,14 @@ const resolvers = {
     },
     signup: async (parent, args, context, info) => {
       const { email, username, password } = args;
+      console.log("checking sign up args: ", args)
       const newUser = await Users.create({
         email: email,
         username: username,
         password: password,
         oauth: false,
       });
+      console.log("checking new user ", newUser);
       return newUser;
     },
     createListing: async (parent, args, context, info) => {
@@ -115,12 +120,13 @@ const resolvers = {
     },
     addToCart: async (parent, args, context, info) => {
       const { username, listing } = args;
-      console.log("logging buyerId from listing args:", listing.buyerId);
+      console.log("logging listing args:", listing);
       //update the cart with the username
       const updatedCart = await Cart.findOneAndUpdate(
         { buyerId: username },
         { $push: { items: listing } }
       );
+      console.log('updated cart:',updatedCart)
       return updatedCart;
     },
     createCart: async (parent, args, context, info) => {
@@ -158,6 +164,11 @@ const resolvers = {
       return seller;
     },
   },
+  // Cart: {
+  //   items: async (parent, args, context, info) => {
+      
+  //   }
+  // }
 };
 
 module.exports = { typeDefs, resolvers };
