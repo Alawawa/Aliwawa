@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Navbar from "../components/Navbar"
-import Body from "../components/Body"
 import Marketplace from '../components/Marketplace'
 import Search from '../components/Search'
 
