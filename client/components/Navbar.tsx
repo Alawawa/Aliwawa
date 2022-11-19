@@ -12,6 +12,7 @@ function Navbar({cartUpdate, toggleCartUpdate}: any) {
   const [signup, toggleSignup] = useState<boolean>(false);
   const [cart, toggleCart] = useState(false);
 
+  
   const loginHandler = () => {
     toggleLogin(!login);
   };

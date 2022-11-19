@@ -9,8 +9,11 @@ const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
 const port = 3000;
+const cors = require('cors');
 dotenv.config();
 require('./auth');
+
+app.use(cors())
 
 // connect to mongodb 
 mongoose.connect(process.env.DATABASE_URI, {

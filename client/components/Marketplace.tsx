@@ -5,51 +5,86 @@ import { AppBar, Button, Typography, Dialog, TextField } from "@mui/material";
 import type { RootState } from "../redux/store";
 import { addToCart } from "../redux/slices/storageSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { gql, useQuery } from '@apollo/client';
+import { JSXElement } from "@babel/types";
 
-function Marketplace({cartUpdate, toggleCartUpdate}: any) {
+
+const GET_ALL_LISTINGS = gql`query {
+  getAllListings {
+    id
+    itemName
+    itemPrice
+    itemDesc
+    itemPic
+    tags
+    purchased
+    sellerId
+    seller {
+      username
+      email
+    }
+  }
+}`
+
+interface MarketplaceProps {
+  cartUpdate: number;
+  toggleCartUpdate: React.Dispatch<React.SetStateAction<number>>
+}
+
+function Marketplace({cartUpdate, toggleCartUpdate}: MarketplaceProps) {
   const state = useSelector((state: RootState) => state).storageSlice;
-  const [listings, setListings] = useState<any>([]);
+  // const [listings, setListings] = useState<any>([]);
+  const { loading, error, data, refetch } = useQuery(GET_ALL_LISTINGS, {
+    fetchPolicy: "cache-first",
+    onCompleted: (data) => {
+      console.log("data received from useQuery ", data)
+      
+    }
+  });
 
-  const getAllListings = () => {
-    fetch("/api", {
-      method: "POST",
-      body: JSON.stringify({
-        query: `query {
-          getAllListings {
-            id
-            itemName
-            itemPrice
-            itemDesc
-            itemPic
-            tags
-            purchased
-            sellerId
-            seller {
-              username
-              email
-            }
-          }
-        }`,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        console.log("data from frontend:", data);
-        setListings(data.data.getAllListings);
-      })
-      .catch((err) => console.log(err));
-  };
+  // useQuery Hook
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error! {error.message}`</p>
 
-  //runs on first render
-  useEffect(() => {
-    getAllListings();
-  }, []);
+  // const getAllListings = () => {
+  //   fetch("/api", {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       query: `query {
+  //         getAllListings {
+  //           id
+  //           itemName
+  //           itemPrice
+  //           itemDesc
+  //           itemPic
+  //           tags
+  //           purchased
+  //           sellerId
+  //           seller {
+  //             username
+  //             email
+  //           }
+  //         }
+  //       }`,
+  //     }),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Access-Control-Allow-Origin": "*",
+  //     },
+  //   })
+  //     .then((res) => {
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       console.log("data from frontend:", data);
+  //       // setListings(data.data.getAllListings);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+  console.log("Checking data: ", data)
+
+
+ 
 
   return (
     <div
@@ -64,7 +99,8 @@ function Marketplace({cartUpdate, toggleCartUpdate}: any) {
         borderRadius: '5px'
       }}
     >
-      {listings.map((el: any, i: number) => (
+      <>
+      {data && data.getAllListings.map((el: any, i: number) => (
         <ListingDisplay
           cartUpdate={cartUpdate} 
           toggleCartUpdate={toggleCartUpdate}
@@ -79,6 +115,7 @@ function Marketplace({cartUpdate, toggleCartUpdate}: any) {
           key={i}
         />
       ))}
+      </>
     </div>
   );
 }
